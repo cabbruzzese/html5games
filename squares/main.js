@@ -2,11 +2,28 @@ function MainGame ()
 {
 	//Create handle to canvas object
 	var c=document.getElementById("myCanvas");
-	var cxt=c.getContext("2d");
+	var ctx=c.getContext("2d");
 
 	var playerturn = 0;
 	var WinnerValue = 0;
 	var griddata = new Array();
+	
+	//background scene
+	var bgSceneName = "backgroundScene";
+	CreateScene(bgSceneName, 0, 0, 0, true);
+	var backgroundScene = GetScene(bgSceneName);
+	backgroundScene.items.push(background);
+	backgroundScene.items.push(mapgrid);
+	
+	var entitySceneName = "entityScene";
+	CreateScene(entitySceneName, 0, 0, 1, true);
+	var entityScene = GetScene(entitySceneName);
+	
+	var hudSceneName = "hudScene";
+	CreateScene(hudSceneName, 0, 0, 2, true);
+	var hudScene = GetScene(hudSceneName);
+	hudScene.items.push(resetbutton);
+
 	function InitGame()
 	{
 		for(var y = 0; y < gridsize; y++)
@@ -17,6 +34,9 @@ function MainGame ()
 				griddata[y][x] = 0;
 			}
 		}
+		
+		//reset entities
+		entityScene.items = [];
 		
 		//reset player's turn
 		playerturn = 1;
@@ -98,17 +118,15 @@ function MainGame ()
 		var xpos = e.offsetX;
 		var ypos = e.offsetY;
 		
-		//if (IsPointInGrid(xpos, ypos))
-		//{
-			gridX = Math.floor((xpos - mapgrid.x) / linestep);
-			gridY = Math.floor((ypos - mapgrid.y) / linestep);
-			
-			if (griddata[gridY][gridX] == 0)
-			{
-				griddata[gridY][gridX] = playerturn;
-				ChangeTurn();
-			}
-		//}
+		gridX = Math.floor((xpos - mapgrid.x) / linestep);
+		gridY = Math.floor((ypos - mapgrid.y) / linestep);
+		
+		if (griddata[gridY][gridX] == 0)
+		{
+			griddata[gridY][gridX] = playerturn;
+			PlacePieceInScene(gridX, gridY, playerturn);
+			ChangeTurn();
+		}		
 	}
 	InitializeInput(c);
 	AddClickableItem(mapgrid.x, mapgrid.y, mapgrid.x + linestep * gridsize, mapgrid.y + linestep * gridsize, onSquaresClick, true);
@@ -125,63 +143,41 @@ function MainGame ()
 		InitGame();
 	}
 	
-	//Set up game loop
-	setInterval(mainLoop, 33);
-	function mainLoop()
+	function PlacePieceInScene(x, y, type)
 	{
-		//background scene
-		var backgroundscene = new Array(); 
-		backgroundscene[0] = background;
-		backgroundscene[1] = mapgrid;		
-		RenderScene(cxt, backgroundscene);
-		
-		//fill entities in grid
-		var entityscene = new Array();
-		trailer = 0;
-		for(var y = 0; y < gridsize; y++)
+		if (type == 1)
 		{
-			for(var x = 0; x < gridsize; x++)
-			{
-				if (griddata[y][x] == 1)
-				{
-					entityscene[trailer] = new Array();
-					entityscene[trailer].type = "vectorlist";
-					entityscene[trailer].x = x * linestep + mapgrid.x + (linestep / 2) - (25 / 2);
-					entityscene[trailer].y = y * linestep + mapgrid.y + (linestep / 2) - (25 / 2);
-					entityscene[trailer][0] = xline1;
-					entityscene[trailer][1] = xline2;
-					trailer++;
-				}
-				
-				else if (griddata[y][x] == 2)
-				{
-					entityscene[trailer] = new Array();
-					entityscene[trailer].type = "vectorlist";
-					entityscene[trailer].x = x * linestep + mapgrid.x;
-					entityscene[trailer].y = y * linestep + mapgrid.y;
-					entityscene[trailer][0] = circle1;
-					trailer++;
-				}
-			}
+			var xPos = x * linestep + mapgrid.x + (linestep / 2) - (25 / 2);
+			var yPos = y * linestep + mapgrid.y + (linestep / 2) - (25 / 2);
+			var entitySceneItem = new VectorListItem(xPos, yPos, [xline1. xline2]);
+			entityScene.items.push(entitySceneItem);
 		}
 		
-		entityscene[trailer] = resetbutton;
-		trailer++;
-				
+		else if (type == 2)
+		{
+			var xPos = x * linestep + mapgrid.x;
+			var yPos = y * linestep + mapgrid.y;
+			var entitySceneItem = new VectorListItem(xPos, yPos, [circle1]);
+			
+			entityScene.items.push(entitySceneItem);
+		}
+		
 		//display winner text
 		if (WinnerValue != 0)
-		{		
-			entityscene[trailer] = new Object();
-			entityscene[trailer].type = "text";
-			entityscene[trailer].x = 50;
-			entityscene[trailer].y = 50;
-			entityscene[trailer].fillstyle = "#00FF00";
-			entityscene[trailer].font = "36pt Arial";
-			entityscene[trailer].content = "Winner! Player: " + WinnerValue;
-			trailer++;
+		{
+			var entitySceneItem = new TextItem(50, 50, "36pt Arial", "#00FF00", "Winner! Player: " + WinnerValue);
+			entityScene.items.push(entitySceneItem);
 		}
-		RenderScene(cxt, entityscene);
 	}
+	
+	//Set up game loop
+	setInterval(mainLoop, 33);	
+	function mainLoop()
+	{
+	}
+	
+	//start Rendering Loop
+	StartSceneRendererLoop(ctx, c);
 	
 	//static call to start the game, since no assets need to load
 	StartGame();

@@ -36,7 +36,7 @@ function CreateScene(name, x, y, order, visible)
 	}
 	
 	//add item into the array
-	ArrayAddItem(SceneGlobals.SceneCollection, newScene);
+	SceneGlobals.SceneCollection.push(newScene);
 	
 	return true;
 }
@@ -56,7 +56,7 @@ function AddScene(scene)
 	}
 	
 	//add and return success
-	ArrayAddItem(SceneGlobals.SceneCollection, scene);
+	SceneGlobals.SceneCollection.push(scene);
 	return true;
 }
 

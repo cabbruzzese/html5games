@@ -1,11 +1,3 @@
-//function to manipulate arrays
-// array = an instance of an array
-// item = object to be added to array
-function ArrayAddItem(array, item)
-{
-	array[array.length] = item;
-}
-
 //function to clone an existing array
 // array = instance of an array
 // Returns: a new array containing the same elements 
@@ -31,11 +23,11 @@ function JoinArray(array1, array2)
 	var i;
 	for (i = 0; i < array1.length; i++)
 	{
-		ArrayAddItem(answer, array1[i]);
+		answer.push(array1[i]);
 	}
 	for (i = 0; i < array2.length; i++)
 	{
-		ArrayAddItem(answer, array2[i]);
+		answer.push(array2[i]);
 	}
 	return answer;
 }

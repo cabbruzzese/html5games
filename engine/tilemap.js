@@ -69,7 +69,7 @@ var TileGlobals = new function()
 		for (var i = 0; i < tilemaps.length; i++)
 		{
 			var sceneobj = this.ParseTileMap(tilemaps[i]);
-			ArrayAddItem(scenearray, sceneobj);
+			scenearray.push(sceneobj);
 		}
 		
 		if (scenearray.length == 0)
@@ -96,7 +96,7 @@ var TileGlobals = new function()
 		{
 			var tempsceneobj = this.ParseTile(tiles[i], widthval, heightval);
 			if (tempsceneobj != null)
-				ArrayAddItem(sceneobjects, tempsceneobj);
+				sceneobjects.push(tempsceneobj);
 		}
 		
 		if (sceneobjects.length == 0)
@@ -165,7 +165,7 @@ var TileGlobals = new function()
 						continue;
 					var vectoritem = this.ParseRenderItem(xmlobj.childNodes[i]);
 					if (vectoritem != null)
-						ArrayAddItem(vectoritems, vectoritem);			
+						vectoritems.push(vectoritem);			
 				}
 				
 				if (vectoritems.length == 0)

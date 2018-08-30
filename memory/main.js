@@ -58,7 +58,7 @@ function MainGame ()
 	
 	function AddCardToScene(tempsceneobject)
 	{
-		ArrayAddItem(GameScene.items, tempsceneobject);
+		GameScene.items.push(tempsceneobject);
 		AddClickableSceneObject(GameScene, tempsceneobject, Card_OnClick, true, [tempsceneobject.name]);
 	}
 	
@@ -76,7 +76,7 @@ function MainGame ()
 		else
 		{
 			tempsceneobject.renderitem = new VectorListItem(0, 0, CloneArray(ASSET_cardfront));
-			ArrayAddItem(tempsceneobject.renderitem.vectoritems, new TextItem (10, 80, "48pt Arial", "#DDDDDD", tempsceneobject.cardvalue));
+			tempsceneobject.renderitem.vectoritems.push(new TextItem (10, 80, "48pt Arial", "#DDDDDD", tempsceneobject.cardvalue));
 		}
 	}
 	
@@ -84,7 +84,7 @@ function MainGame ()
 	{
 		var assetarray = JoinArray(CloneArray(ASSET_cardwin), CloneArray(ASSET_cardfront));
 		tempsceneobject.renderitem = new VectorListItem(0, 0, CloneArray(assetarray));
-		ArrayAddItem(tempsceneobject.renderitem.vectoritems, new TextItem (10, 80, "48pt Arial", "#DDDDDD", tempsceneobject.cardvalue));
+		tempsceneobject.renderitem.vectoritems.push(new TextItem (10, 80, "48pt Arial", "#DDDDDD", tempsceneobject.cardvalue));
 	}
 		
 	var BGScene;
@@ -96,7 +96,7 @@ function MainGame ()
 		{
 			BGScene = GetScene("background");
 			var backgroundobject = new SceneObject("backgroundobject", 0, 0, new VectorListItem(0, 0, ASSET_background));
-			ArrayAddItem(BGScene.items, backgroundobject);
+			BGScene.items.push(backgroundobject);
 		}
 		if (CreateScene("gamescreen", 0, 0, 0, false))
 		{
@@ -143,7 +143,7 @@ function MainGame ()
 		{
 			GameOverScene = GetScene("gameoversceen");
 			var gameoversceneobject = new SceneObject("gameoversceneobject", 0, 0, new VectorListItem(0, 0, ASSET_GameOver));
-			ArrayAddItem(GameOverScene.items, gameoversceneobject);
+			GameOverScene.items.push(gameoversceneobject);
 		}
 		//start the renderer (must pass in the context to initialize it)
 		StartSceneRendererLoop(cxt, c);
@@ -253,7 +253,7 @@ function MainGame ()
 		while(tempoptions.length > 0)
 		{
 			var randnum = Math.floor(Math.random()*tempoptions.length);
-			ArrayAddItem(griddata, tempoptions[randnum]);
+			griddata.push(tempoptions[randnum]);
 			ArrayRemoveIndex(tempoptions, randnum);
 		}
 	}	

@@ -27,10 +27,10 @@ function MainGame ()
 		{
 			BGScene = GetScene("background");
 			var tempsceneobject = new SceneObject("backgroundobject", 0, 0, new VectorListItem(0, 0, ASSET_editorbackground));
-			ArrayAddItem(BGScene.items, tempsceneobject);
+			BGScene.items.push(tempsceneobject);
 			
 			var tempsceneobject = new SceneObject("panelobject", 0, 0, new VectorListItem(0, 0, ASSET_editorpanelbox));
-			ArrayAddItem(BGScene.items, tempsceneobject);
+			BGScene.items.push(tempsceneobject);
 		}		
 		if (CreateScene("hud", 0, 0, 0, false))
 		{
@@ -38,11 +38,11 @@ function MainGame ()
 			// var tempsceneobject;
 			// ScoreLabel = new TextItem(0, 0, "18pt Arial", "#AA0000", "Score -");
 			// tempsceneobject = new SceneObject("score", 15, 25, new VectorListItem(0, 0, [ScoreLabel]));
-			// ArrayAddItem(HUDScene.items, tempsceneobject);
+			// HUDScene.items.push(tempsceneobject);
 
 			// TimeLabel = new TextItem(0, 0, "18pt Arial", "#AA0000", "Time (0:00)");
 			// tempsceneobject = new SceneObject("time", 300, 25, new VectorListItem(0, 0, [TimeLabel]));
-			// ArrayAddItem(HUDScene.items, tempsceneobject);
+			// HUDScene.items.push(tempsceneobject);
 		}
 		//start the renderer (must pass in the context to initialize it)
 		StartSceneRendererLoop(cxt, c);
@@ -70,7 +70,7 @@ function MainGame ()
 		if (ArrayFindIndexByItem(KeysDown, key) == -1)
 		{
 			//add to keydown array
-			ArrayAddItem(KeysDown, key);
+			KeysDown.push(key);
 			
 			
 			switch(key)

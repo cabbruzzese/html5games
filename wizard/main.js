@@ -45,7 +45,7 @@ function MainGame ()
 		{
 			BGScene = GetScene("background");
 			var backgroundobject = new SceneObject("backgroundobject", 0, 0, new VectorListItem(0, 0, ASSET_background));
-			ArrayAddItem(BGScene.items, backgroundobject);
+			BGScene.items.push(backgroundobject);
 		}
 		if (CreateScene("gamescreen", 0, 0, 0, false))
 		{
@@ -56,7 +56,7 @@ function MainGame ()
 			PlayerAttackAnim = new AnimatedItem(0, 0, ASSET_animattack, 200, 1, PlayerAttackFinish, null);
 			
 			tempsceneobject = new SceneObject("wizard", 64, 96, PlayerWalkAnim);
-			ArrayAddItem(GameScene.items, tempsceneobject);
+			GameScene.items.push(tempsceneobject);
 			tempsceneobject.collision = new CollisionObject( 10, 0, 54, 96, null);
 			PlayerObject = tempsceneobject;
 			PlayerObject.x = 200;
@@ -65,7 +65,7 @@ function MainGame ()
 			PlayerObject.paintime = 0;
 			
 			var monster1 = new Monster(100, 70, "test");
-			ArrayAddItem(monsters, monster1);
+			monsters.push(monster1);
 			
 			TileGlobals.BlockCollidedCallback = onBlockCollided;
 			TileGlobals.ParseXMLObject(LevelXML);
@@ -76,21 +76,21 @@ function MainGame ()
 			// var tempsceneobject;
 			// ScoreLabel = new TextItem(0, 0, "18pt Arial", "#AA0000", "Score -");
 			// tempsceneobject = new SceneObject("score", 15, 25, new VectorListItem(0, 0, [ScoreLabel]));
-			// ArrayAddItem(HUDScene.items, tempsceneobject);
+			// HUDScene.items.push(tempsceneobject);
 
 			// TimeLabel = new TextItem(0, 0, "18pt Arial", "#AA0000", "Time (0:00)");
 			// tempsceneobject = new SceneObject("time", 300, 25, new VectorListItem(0, 0, [TimeLabel]));
-			// ArrayAddItem(HUDScene.items, tempsceneobject);
+			// HUDScene.items.push(tempsceneobject);
 			
 		}
 		if (CreateScene("gameoversceen", 0, 0, 0, false))
 		{
 			GameOverScene = GetScene("gameoversceen");
 			// var tempsceneobject = new SceneObject("gameoversceneobject", 0, 0, new VectorListItem(0, 0, ASSET_GameOver));
-			// ArrayAddItem(GameOverScene.items, tempsceneobject);
+			// GameOverScene.items.push(tempsceneobject);
 			
 			// ReplayButton = new SceneObject("replaybutton", 300, 420, new VectorListItem(0, 0, [replaybuttonrec1, replaybuttonrec2, replaybuttontext]));
-			// ArrayAddItem(GameOverScene.items, ReplayButton);
+			// GameOverScene.items.push(ReplayButton);
 			// AddClickableSceneObject(GameOverScene, ReplayButton, onReplayClick, false, null);
 		}
 		//start the renderer (must pass in the context to initialize it)
@@ -229,7 +229,7 @@ function MainGame ()
 		this.lastshoottime = 0;
 		this.lastdir = 1;
 		
-		ArrayAddItem(GameScene.items, this.sceneobject);
+		GameScene.items.push(this.sceneobject);
 	}
 	
 	function KillFireBall(fireball)
@@ -286,7 +286,7 @@ function MainGame ()
 	{
 		var fireballitem = new VectorListItem(0, 0, ASSET_fireball);
 		var fireball = new SceneObject("fireball", 0, 0, fireballitem);
-		ArrayAddItem(GameScene.items, fireball);
+		GameScene.items.push(fireball);
 		fireball.collision = new CollisionObject( 0, 0, 16, 16, onFireballHit);
 		fireball.collision.maxspeed = xspeed;
 		fireball.collision.targetspeedx = xspeed;
@@ -302,7 +302,7 @@ function MainGame ()
 		//fireball.y = monster.sceneobject.y +(monster.sceneobject.GetHeight() / 2);
 		fireball.y = monster.sceneobject.y;
 		
-		ArrayAddItem(fireballs, fireball);
+		fireballs.push(fireball);
 	}
 	
 	function FireballThink()
@@ -446,11 +446,11 @@ function MainGame ()
 		//create sparkle object
 		var sparkleitem = new VectorListItem(0, 0, ASSET_sparkle);
 		var sparkle = new SceneObject("sparkle", 0, 0, sparkleitem);
-		ArrayAddItem(GameScene.items, sparkle);
+		GameScene.items.push(sparkle);
 		sparkle.collision = new CollisionObject( 0, 0, 32, 48, null);
 		sparkle.lifetime = 22;
 		UpdateSparklePosition(sparkle);
-		ArrayAddItem(sparkles, sparkle);
+		sparkles.push(sparkle);
 	}
 	function PlayerAttackFinish(obj, args)
 	{
@@ -496,7 +496,7 @@ function MainGame ()
 		if (ArrayFindIndexByItem(KeysDown, key) == -1)
 		{
 			//add to keydown array
-			ArrayAddItem(KeysDown, key);
+			KeysDown.push(key);
 			
 			
 			switch(key)

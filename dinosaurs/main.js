@@ -52,7 +52,7 @@ function MainGame ()
 		{
 			BGScene = GetScene("background");
 			var backgroundobject = new SceneObject("backgroundobject", 0, 0, new VectorListItem(0, 0, ASSET_background));
-			ArrayAddItem(BGScene.items, backgroundobject);
+			BGScene.items.push(backgroundobject);
 			
 			AddClickableSceneObject(BGScene, backgroundobject, onBackgroundClick, false, null);
 		}
@@ -61,7 +61,7 @@ function MainGame ()
 			GameScene = GetScene("gamescreen");
 			var tempsceneobject;
 			tempsceneobject = new SceneObject("dino", 300, 300, ASSET_dinobodyimage);
-			ArrayAddItem(GameScene.items, tempsceneobject);
+			GameScene.items.push(tempsceneobject);
 			tempsceneobject.collision = new CollisionObject( 15, 20, 110, 75, onDinoCollided);
 			DinoSceneObject = tempsceneobject;
 		}
@@ -71,21 +71,21 @@ function MainGame ()
 			var tempsceneobject;
 			ScoreLabel = new TextItem(0, 0, "18pt Arial", "#AA0000", "Score -");
 			tempsceneobject = new SceneObject("score", 15, 25, new VectorListItem(0, 0, [ScoreLabel]));
-			ArrayAddItem(HUDScene.items, tempsceneobject);
+			HUDScene.items.push(tempsceneobject);
 
 			TimeLabel = new TextItem(0, 0, "18pt Arial", "#AA0000", "Time (0:00)");
 			tempsceneobject = new SceneObject("time", 300, 25, new VectorListItem(0, 0, [TimeLabel]));
-			ArrayAddItem(HUDScene.items, tempsceneobject);
+			HUDScene.items.push(tempsceneobject);
 			
 		}
 		if (CreateScene("gameoversceen", 0, 0, 0, false))
 		{
 			GameOverScene = GetScene("gameoversceen");
 			var tempsceneobject = new SceneObject("gameoversceneobject", 0, 0, new VectorListItem(0, 0, ASSET_GameOver));
-			ArrayAddItem(GameOverScene.items, tempsceneobject);
+			GameOverScene.items.push(tempsceneobject);
 			
 			ReplayButton = new SceneObject("replaybutton", 300, 420, new VectorListItem(0, 0, [replaybuttonrec1, replaybuttonrec2, replaybuttontext]));
-			ArrayAddItem(GameOverScene.items, ReplayButton);
+			GameOverScene.items.push(ReplayButton);
 			AddClickableSceneObject(GameOverScene, ReplayButton, onReplayClick, false, null);
 		}
 		//start the renderer (must pass in the context to initialize it)
@@ -271,7 +271,7 @@ function MainGame ()
 			tempsceneobject.x = randx - (tempsceneobject.GetWidth() / 2);
 			tempsceneobject.collision = new CollisionObject( 0, 0, 35, 50, null);
 			tempsceneobject.exploding = false;
-			ArrayAddItem(GameScene.items, tempsceneobject);
+			GameScene.items.push(tempsceneobject);
 			
 			var randspawn = Math.floor(Math.random()*3);
 			if (randspawn == 1)
@@ -280,7 +280,7 @@ function MainGame ()
 				tempsceneobject = new SceneObject("raptor", -100, raptory, ASSET_raptorimage.Clone());
 				tempsceneobject.collision = new CollisionObject( 10, 10, 90, 100, null);
 				tempsceneobject.exploding = false;
-				ArrayAddItem(GameScene.items, tempsceneobject);
+				GameScene.items.push(tempsceneobject);
 			}
 		}
 		
