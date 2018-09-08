@@ -1,7 +1,7 @@
 var SceneGlobals = new function()
 {
 	//object to hold scenes
-	this.SceneCollection = new Array();
+	this.SceneCollection = [];
 	this.RENDER_TIMEOUT = 33;
 	this.rendertime = 0;
 }
@@ -13,7 +13,7 @@ var SceneGlobals = new function()
 // order = integer drawing order (for placing scenes on top or bottom)
 // visible = boolean value to indicate if cene should be drawn
 //Returns:
-// true if successful or false if
+// true if successful or false
 function CreateScene(name, x, y, order, visible)
 {
 	//check if the scene name is already in use
@@ -32,7 +32,7 @@ function CreateScene(name, x, y, order, visible)
 		y : y,
 		order : order,
 		visible : visible,
-		items : new Array()
+		items : []
 	}
 	
 	//add item into the array

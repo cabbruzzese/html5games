@@ -25,9 +25,9 @@ function MainGame ()
 	var PlayerObject;
 	var PlayerWalkAnim;
 	var PlayerAttackAnim;
-	var monsters = new Array();
-	var fireballs = new Array();
-	var sparkles = new Array();
+	var monsters = [];
+	var fireballs = [];
+	var sparkles = [];
 
 	InitializeScenes();
 
@@ -487,7 +487,7 @@ function MainGame ()
 		MovePlayerX(moveval, "left");
 	}
 	
-	var KeysDown = new Array();
+	var KeysDown = [];
 	document.onkeydown = function(event)
 	{
 		var key = event.keyCode;

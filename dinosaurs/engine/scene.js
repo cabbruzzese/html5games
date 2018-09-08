@@ -1,7 +1,7 @@
 var SceneGlobals = new function()
 {
 	//object to hold scenes
-	this.SceneCollection = new Array();
+	this.SceneCollection = [];
 	this.RENDER_TIMEOUT = 33;
 	this.rendertime = 0;
 }
@@ -32,7 +32,7 @@ function CreateScene(name, x, y, order, visible)
 		y : y,
 		order : order,
 		visible : visible,
-		items : new Array()
+		items : []
 	}
 	
 	//add item into the array

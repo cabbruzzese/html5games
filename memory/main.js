@@ -15,7 +15,7 @@ function MainGame ()
 	var griddata;
 	function InitGame()
 	{
-		griddata = new Array();		
+		griddata = [];		
 		numcardsselected = 0;
 		selectedcard = null;
 		lastselectedcard = null;
@@ -67,7 +67,7 @@ function MainGame ()
 		if (tempsceneobject.matchfound == true)
 		{
 			//don't display found cards
-			tempsceneobject.renderitem = new VectorListItem(0, 0, new Array());
+			tempsceneobject.renderitem = new VectorListItem(0, 0, []);
 		}
 		else if (tempsceneobject.IsFront == false)
 		{

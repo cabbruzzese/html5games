@@ -1,6 +1,6 @@
 var Input = new function()
 {
-	this.ClickableList = new Array();
+	this.ClickableList = [];
 	this.MouseInputPaused = false;
 	
 	this.MouesPosX = 0;
@@ -110,7 +110,7 @@ function onCanvasClick (e)
 function InitializeInput(canvas)
 {
 	Input.MouseInputPaused = false;
-	Input.ClickableList = new Array();
+	Input.ClickableList = [];
 	AddClick(canvas, onCanvasClick);
 	AddMouseMove(canvas, onCanvasMouseMove);
 }

@@ -9,8 +9,8 @@ function MainGame ()
 	var BGScene;
 	var HUDScene;
 	
-	var entities = new Array();
-	var tiles = new Array();
+	var entities = [];
+	var tiles = [];
 
 	InitializeScenes();
 
@@ -61,7 +61,7 @@ function MainGame ()
 		ProcessKeys();		
 	}	
 		
-	var KeysDown = new Array();
+	var KeysDown = [];
 	document.onkeydown = function(event)
 	{
 		var key = event.keyCode;

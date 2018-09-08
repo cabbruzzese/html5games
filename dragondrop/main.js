@@ -38,7 +38,7 @@ function MainGame ()
 		right: 500,
 		bottom: 400
 	}
-	var background = new Array();
+	var background = []
 	background.type = "vectorlist";
 	background.x = 0;
 	background.y = 0;
@@ -81,7 +81,7 @@ function MainGame ()
 		bottom: 120
 	}
 
-	var vectorlist = new Array();
+	var vectorlist = [];
 	vectorlist.type = "vectorlist";
 	vectorlist.x = 50;
 	vectorlist.y = 100;
@@ -103,7 +103,7 @@ function MainGame ()
 	function mainLoop()
 	{
 				
-		var SceneArray = new Array(); 
+		var SceneArray = []; 
 		SceneArray[0] = background;
 		SceneArray[1] = vectorlist;
 		SceneArray[2] = imagething;

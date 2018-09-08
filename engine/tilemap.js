@@ -62,7 +62,7 @@ var TileGlobals = new function()
 		if (xmlobj == null)
 			return null;
 	
-		var scenearray = new Array();
+		var scenearray = [];
 		
 		//parse any tilemaps
 		var tilemaps = xmlobj.getElementsByTagName(this.TileMap_NAME);
@@ -91,7 +91,7 @@ var TileGlobals = new function()
 		var widthval  = parseInt(xmlobj.attributes.getNamedItem(this.TileMap_tilewidth_ATTR).nodeValue);
 		var heightval = parseInt(xmlobj.attributes.getNamedItem(this.TileMap_tileheight_ATTR).nodeValue);
 
-		var sceneobjects = new Array();
+		var sceneobjects = [];
 		for (var i = 0; i < tiles.length; i++)
 		{
 			var tempsceneobj = this.ParseTile(tiles[i], widthval, heightval);
@@ -158,7 +158,7 @@ var TileGlobals = new function()
 		switch(xmlobj.nodeName)
 		{
 			case this.VectorList_NAME:
-				var vectoritems = new Array;
+				var vectoritems = [];
 				for (var i = 0; i < xmlobj.childNodes.length; i++)
 				{
 					if (xmlobj.childNodes[i].nodeName == "#text")

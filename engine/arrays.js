@@ -4,7 +4,7 @@
 //  Note: (existing object pointers are kept, does not attempt to clone array items)
 function CloneArray(array)
 {
-	var answer = new Array();
+	var answer = [];
 	for (var i = 0; i < array.length; i++)
 	{
 		answer[i] = array[i];
@@ -19,7 +19,7 @@ function CloneArray(array)
 // Returns: A new array containing all of the elements from the first 2
 function JoinArray(array1, array2)
 {
-	var answer = new Array();
+	var answer = [];
 	var i;
 	for (i = 0; i < array1.length; i++)
 	{
