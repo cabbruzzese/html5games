@@ -183,8 +183,14 @@ function VectorListItem (x, y, vectoritems)
 	
 	this.Clone = function()
 	{
-		//ERROR!!! Not implemented
-		x = 1 / 0;
+		var copy = new VectorListItem(this.x, this.y, []);
+		for (var i = 0; i < this.vectoritems.length; i++)
+		{
+			var itemCopy = this.vectoritems[i].Clone();
+			copy.vectoritems.push(itemCopy);
+		}
+		
+		return copy;
 	}
 }
 
@@ -229,8 +235,8 @@ function VectorItem (type, fillstyle, left, top, right, bottom)
 	
 	this.Clone = function()
 	{
-		//ERROR!!! Not implemented
-		x = 1 / 0;
+		var copy = new VectorItem(this.type, this.fillstyle, this.left, this.top, this.right, this.bottom);
+		return copy;
 	}
 }
 
@@ -324,8 +330,14 @@ function AnimatedItem (x, y, frames, delay, repeated, callback, arguments)
 	
 	this.Clone = function()
 	{
-		//ERROR!!! Not implemented
-		x = 1 / 0;
+		var copy = new AnimatedItem (this.x, this.y, [], this.delay, this.repeated, this.callback, this.arguments);
+		for (var i = 0; i < this.frames.length; i++)
+		{
+			var frameCopy = this.frames[i].Clone();
+			copy.frames.push(frameCopy);
+		}
+		
+		return copy;
 	}
 }
 
@@ -362,8 +374,8 @@ function SceneObject (name, x, y, renderitem)
 	
 	this.Clone = function()
 	{
-		//ERROR!!! Not implemented
-		x = 1 / 0;
+		var copy = new SceneObject(this.name, this.x, this.y, this.renderitem);
+		return copy;
 	}
 }
 
@@ -431,7 +443,11 @@ function DrawItem(context, canvas, item)
 	else if (item.type == "vectorlist")
 	{
 		DrawVectorList(context, canvas, item);
-	}		
+	}
+	else if (item.type === "text")
+	{
+		DrawText(context, canvas, item);
+	}
 	else if (item.type == "animated")
 	{
 		item.UpdateFrameTime(SceneGlobals.RENDER_TIMEOUT);
@@ -504,13 +520,62 @@ function DrawImage(context, canvas, item)
 	context.restore();
 }
 
+//Draw a single vector item from a list, assuming that translation and context saving has already been done in DrawVectorList.
+// Warning: Only call this function from DrawVectorList or a recursive DrawVectorListItem to render a vector list
+// context = drawing context
+// canvas = canvas for measuring
+// listobjects = VectorListItem object
+// item = current item being rendered
+// halfwidth = calculated center x of parent
+// halfheight = calculated center y of parent
+function DrawVectorListItem(context, canvas, listobject, item, halfwidth, halfheight)
+{
+	if (item.type == "line")
+	{
+		context.strokeStyle = item.fillstyle;
+		context.lineWidth = 1;
+		context.beginPath();
+		context.moveTo(item.left - halfwidth, item.top - halfheight);
+		context.lineTo(item.right - halfwidth, item.bottom - halfheight);
+		context.stroke();
+	}
+	else if (item.type == "circle")
+	{
+		context.beginPath();
+		context.arc(item.left + item.right - halfwidth, item.top + item.right - halfheight, item.right,0,Math.PI*2,true);
+		context.closePath();	
+		context.fill();
+	}
+	else if (item.type == "rectangle")
+	{
+		context.fillStyle = item.fillstyle;
+		context.fillRect(item.left - halfwidth, item.top - halfheight, item.right, item.bottom);
+	}
+	else if (item.type == "text")
+	{
+		DrawText(context, canvas, item, -(halfwidth), -(halfheight));
+	}
+	else if (item.type == "vectorlist")
+	{
+		var itemlist = item.vectoritems;
+		var itemhalfwidth = halfwidth + item.x;
+		var itemhalfheight = halfheight + item.y;
+		for (var i = 0; i < itemlist.length; i++)
+		{
+			var listItem = item.vectoritems[i];
+			DrawVectorListItem(context, canvas, item, listItem, itemhalfwidth, itemhalfheight);
+		}
+	}
+	
+	//if type does not match, do nothing
+}
+
 //Draw a sequence of vector operations
 // context = drawing context
 // canvas = canvas for measuring
 // listobjects = VectorListItem object
 function DrawVectorList(context, canvas, listobject)
 {
-
 	//save invert
 	context.save();
 	var halfwidth = listobject.GetWidth() / 2;
@@ -527,42 +592,22 @@ function DrawVectorList(context, canvas, listobject)
 	for (var i = 0; i < itemlist.length; i++)
 	{
 		var item = itemlist[i];
-		
-		if (item.type == "line")
-		{
-			context.strokeStyle = item.fillstyle;
-			context.lineWidth = 1;
-			context.beginPath();
-			context.moveTo(item.left - halfwidth, item.top - halfheight);
-			context.lineTo(item.right - halfwidth, item.bottom - halfheight);
-			context.stroke();
-		}
-		else if (item.type == "circle")
-		{
-			context.beginPath();
-			context.arc(item.left + item.right - halfwidth, item.top + item.right - halfheight, item.right,0,Math.PI*2,true);
-			context.closePath();	
-			context.fill();
-		}
-		else if (item.type == "rectangle")
-		{
-			context.fillStyle = item.fillstyle;
-			context.fillRect(item.left - halfwidth, item.top - halfheight, item.right, item.bottom);
-		}
-		else if (item.type == "text")
-		{
-			context.fillStyle = item.fillstyle;
-			context.font = item.font;
-			context.fillText(item.content, item.x - halfwidth, item.y - halfheight);
-		}
-		
-		//if type does not match, do nothing
+		DrawVectorListItem(context, canvas, listobject, item, halfwidth, halfheight);
 	}
 	
 	//restore translation
 	context.restore();
 	context.translate(0,0);
 	//restore invert
+	context.restore();
+}
+
+function DrawText(context, canvas, item, offsetx = 0, offsety = 0)
+{
+	context.save();
+	context.fillStyle = item.fillstyle;
+	context.font = item.font;
+	context.fillText(item.content, item.x + offsetx, item.y + offsety);
 	context.restore();
 }
 
