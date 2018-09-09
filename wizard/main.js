@@ -10,8 +10,11 @@ function MainGame ()
 	var LevelXML;
 	function LoadXML()
 	{
-		//LevelXML = TileGlobals.FetchLevelData("http://zeliepa.com/cabbruzzese/wizard/testlevel1.xml");
-		LevelXML = TileGlobals.FetchLevelData("testlevel1.xml");
+		//LevelXML = TileGlobals.FetchLevelData("testlevel1.xml");
+
+		//Local Testing with string in js file
+		var xmlParser = new DOMParser();
+		LevelXML = xmlParser.parseFromString(LEVEL_1_DATA, "text/xml");
 	}
 	LoadXML();
 
