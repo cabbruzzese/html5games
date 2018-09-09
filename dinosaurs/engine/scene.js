@@ -14,7 +14,7 @@ var SceneGlobals = new function()
 // visible = boolean value to indicate if cene should be drawn
 //Returns:
 // true if successful or false if
-function CreateScene(name, x, y, order, visible)
+function CreateScene(name, x, y, order, visible, sceneobjects = [])
 {
 	//check if the scene name is already in use
 	var sceneindex = ArrayFindIndexByName(SceneGlobals.SceneCollection, name);
@@ -32,7 +32,7 @@ function CreateScene(name, x, y, order, visible)
 		y : y,
 		order : order,
 		visible : visible,
-		items : []
+		items : sceneobjects
 	}
 	
 	//add item into the array

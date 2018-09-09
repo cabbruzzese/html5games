@@ -12,9 +12,10 @@ var SceneGlobals = new function()
 // y = float y offset for drawing scene
 // order = integer drawing order (for placing scenes on top or bottom)
 // visible = boolean value to indicate if cene should be drawn
+// sceneobjects (optional) = list of scene objects to iniatialize with
 //Returns:
 // true if successful or false
-function CreateScene(name, x, y, order, visible)
+function CreateScene(name, x, y, order, visible, sceneobjects = [])
 {
 	//check if the scene name is already in use
 	var sceneindex = ArrayFindIndexByName(SceneGlobals.SceneCollection, name);
@@ -32,7 +33,7 @@ function CreateScene(name, x, y, order, visible)
 		y : y,
 		order : order,
 		visible : visible,
-		items : []
+		items : sceneobjects
 	}
 	
 	//add item into the array

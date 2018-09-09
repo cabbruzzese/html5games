@@ -450,22 +450,7 @@ function DrawItem(context, canvas, item)
 	}
 	else if (item.type == "animated")
 	{
-		item.UpdateFrameTime(SceneGlobals.RENDER_TIMEOUT);
-		var frameitem = item.frames[item.currentframe];
-		
-		//sanity to prevent recursive calls
-		if (frameitem.type == "animated")
-			return;
-		
-		//copy values into target item
-		frameitem.x = item.x;
-		frameitem.y = item.y;
-		frameitem.rotation = item.rotation;
-		frameitem.invertX = item.invertX;
-		frameitem.invertY = item.invertY;
-
-		//draw target item
-		DrawItem(context, canvas, frameitem);
+		DrawAnimatedItem(context, canvas, item);
 	}
 	else if (item.type == "sceneobject")
 	{
@@ -495,6 +480,30 @@ function DrawItem(context, canvas, item)
 	//if type property is invalid or empty, then no action is taken
 	
 	//EndContextRotate(context, item);
+}
+
+//Draws an individual Animated Item to the context
+// context = context for drawing
+// canvas = canvas object for measuring
+// item = Animated Item object
+function DrawAnimatedItem(context, canvas, item)
+{
+	item.UpdateFrameTime(SceneGlobals.RENDER_TIMEOUT);
+	var frameitem = item.frames[item.currentframe];
+	
+	//sanity to prevent recursive calls
+	if (frameitem.type == "animated")
+		return;
+	
+	//copy values into target item
+	frameitem.x = item.x;
+	frameitem.y = item.y;
+	frameitem.rotation = item.rotation;
+	frameitem.invertX = item.invertX;
+	frameitem.invertY = item.invertY;
+
+	//draw target item
+	DrawItem(context, canvas, frameitem);
 }
 
 //Draws an individual image to the context
@@ -530,6 +539,8 @@ function DrawImage(context, canvas, item)
 // halfheight = calculated center y of parent
 function DrawVectorListItem(context, canvas, listobject, item, halfwidth, halfheight)
 {
+	context.save();
+
 	if (item.type == "line")
 	{
 		context.strokeStyle = item.fillstyle;
@@ -555,19 +566,33 @@ function DrawVectorListItem(context, canvas, listobject, item, halfwidth, halfhe
 	{
 		DrawText(context, canvas, item, -(halfwidth), -(halfheight));
 	}
+	else if (item.type == "animated")
+	{
+		DrawAnimatedItem(context, canvas, item);
+	}
 	else if (item.type == "vectorlist")
 	{
+		//save invert
+		context.save();
+		var itemhalfwidth = 0;//item.GetWidth() / 2;
+		var itemhalfheight = 0;//item.GetHeight() / 2;
+		invertandtranslatecontext(context, canvas, item, item.x + halfwidth, item.y + halfheight);
+
 		var itemlist = item.vectoritems;
-		var itemhalfwidth = halfwidth + item.x;
-		var itemhalfheight = halfheight + item.y;
 		for (var i = 0; i < itemlist.length; i++)
-		{
+		{			
 			var listItem = item.vectoritems[i];
 			DrawVectorListItem(context, canvas, item, listItem, itemhalfwidth, itemhalfheight);
 		}
+		//revert translate
+		context.restore();
+		context.translate(0,0);
+		//revert invert
+		context.restore();
 	}
 	
 	//if type does not match, do nothing
+	context.restore();
 }
 
 //Draw a sequence of vector operations
